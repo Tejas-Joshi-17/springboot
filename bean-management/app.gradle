@@ -1,0 +1,87 @@
+def archiveJarName="${project.name}-${project.version}.jar"
+def archiveWarName="${project.name}-${project.version}.war"
+def pidName="${project.name}.pid"
+def outName="${project.name}.log"
+def errName="${project.name}.err"
+def projectName="${project.name}"
+
+def installDir=file("${project.buildDir}/install/${project.name}")
+project.ext {
+    targetConfiguration = new Properties()
+    def target = project.hasProperty('target') ? target : 'devel'
+    targetConfiguration.put('jarname', archiveJarName.toString())
+    targetConfiguration.put('warname', archiveWarName.toString())
+    targetConfiguration.put('target', target.toString())
+    targetConfiguration.put('pidname', pidName.toString())
+    targetConfiguration.put('outname', outName.toString())
+    targetConfiguration.put('errname', errName.toString())
+    targetConfiguration.put('projectname', projectName.toString())
+    targetConfiguration.put("buildTimestamp", new Date().format("yyyy-MM-dd HH:mm:ss z"));
+    File cfgFile = file("${target}.properties")
+    if (cfgFile.exists()) {
+        cfgFile.withInputStream{
+            targetConfiguration.load(it);
+        }
+    }
+}
+
+def bigCopySpec = copySpec {
+
+    file("src").eachDir() { dir ->
+
+        from(file("src/dist")) {
+            exclude 'cfg/*.lmk'
+            exclude 'keys/*.jks'
+            exclude 'cfg/*.ks'
+            exclude 'cfg/*.ser'
+            exclude 'cfg/authorized_keys'
+            exclude '**/*.jpg'
+            exclude '**/*.gif'
+            exclude '**/*.png'
+            exclude '**/*.pdf'
+            exclude '**/*.ico'
+            exclude '**/*.war'
+            exclude '**/*.dat'
+            fileMode 0700
+            filter(
+                    org.apache.tools.ant.filters.ReplaceTokens,
+                    tokens: targetConfiguration
+            )
+        }
+        from(file("src/dist")) {
+            include 'cfg/*.lmk'
+            include 'cfg/*.ks'
+            include 'keys/*.jks'
+            include 'cfg/*.ser'
+            include 'cfg/authorized_keys'
+            fileMode 0600
+        }
+        from(file("src/dist")) {
+            include '**/*.jpg'
+            include '**/*.gif'
+            include '**/*.png'
+            include '**/*.pdf'
+            include '**/*.ico'
+            include '**/*.war'
+            include '**/*.dat'
+        }
+    }
+    from(file("build/libs")) {
+        rename("${targetConfiguration.jarname}", archiveJarName)
+    }
+
+}
+
+jar {enabled = false }
+
+task installApp(type: Sync) {
+    description 'Installs SMPD based application'
+    into { installDir }
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    with bigCopySpec
+
+}
+
+installApp.dependsOn('build')
+
+

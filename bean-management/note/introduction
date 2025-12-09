@@ -1,0 +1,82 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    class OrderService {
+        private PaymentService paymentService = new PaymentService();   // tightly coupled
+    }
+
+    Three Major Problems with this code :-
+
+    1) Tight Coupling :-
+        If you want to switch to StripePaymentService, you need to edit and recompile OrderService.
+
+    2) Hard To Test :-
+        You cant easily PaymentService with a mock for testing.
+
+    3) Scattered Object Creation :-
+        Every class creates its own objects using new, spreading object lifecycle and config logic throughout the app.
+
+
+    Tight Coupling Problem is just the beginning :-
+        Earlier Java Enterprise Edition code had more issues like :-
+            - 1) Inefficient JDBC and ORM Integration
+            - 2) Scattered Configuration
+            - 3) Deployment Complexity
+            - 4) Verbose and Repetitive Code
+            - 5) Developers manually wired dependencies, making testing and maintenance hard.
+        To Rescue Spring Comes
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+The Spring Framework Modules :-
+
+    [image required]
+
+    The Spring Framework provides a comprehensive programming and configuration model for modern java-based enterprise applications -
+    on any kind of deployment platform
+
+    Spring Ecosystem :-
+
+        1) Spring Framework
+        2) SpringBoot
+        3) Spring Cloud
+        4) Spring Data
+        5) Spring Authentication
+        6) Spring Kafka
+        7) Spring Integration
+        8) Spring Security
+        9) Spring Statemachine
+
+
+    History :-
+
+        Early 2000s, Java EE Apps :-
+            - Complex
+            - Heavyweight
+            - Difficult to test and maintain
+
+        In 2004, Rad Johnson open-sourced the Spring Framework
+            - Added Inversion of Control Containers
+            - Dependency Injection (DI)
+            - Rapidly adopted by enterprise developer.
+
+        In 2014, Spring Boot was released with :-
+            - Auto-Configuration
+            - Starter Dependencies
+            - Embedded Server (Tomcat, Jetty)
+            - Production-ready features (health-checks, metrics)
+
+        Spring Boot :- Spring framework + Auto Configuration + Conventions + Tools
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Prerequisites for Spring Boot :--
+
+    Minimum Spring Knowledge to Learn :-
+
+        - 1) IOC and Dependency Injection :- @Component, @Autowired, Constructor Injection, etc.
+        - 2) Bean Management - @Configuration, @Bean, @PostConstruct, @PreDestroy
+        - 3) Spring Context :- What is ApplicationContext
+        - 4) Spring MVC Basics :- @Controller, @RestController, @RequestMapping, etc.
+
+
+
