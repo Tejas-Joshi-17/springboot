@@ -10,7 +10,7 @@
         If you want to switch to StripePaymentService, you need to edit and recompile OrderService.
 
     2) Hard To Test :-
-        You cant easily PaymentService with a mock for testing.
+        You cant easily replace PaymentService with a mock for testing.
 
     3) Scattered Object Creation :-
         Every class creates its own objects using new, spreading object lifecycle and config logic throughout the app.

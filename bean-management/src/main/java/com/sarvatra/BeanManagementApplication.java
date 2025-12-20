@@ -1,6 +1,7 @@
 package com.sarvatra;
 
 import com.sarvatra.dto.PaymentService;
+import com.sarvatra.dto.Paytm;
 import com.sarvatra.notification.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,34 +22,47 @@ import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
-public class BeanManagementApplication implements CommandLineRunner {
+public class BeanManagementApplication implements CommandLineRunner{
+
+    private final PaymentService paymentService1;
+    private final Paytm paytm;
+
+    @Autowired
+    BeanManagementApplication(PaymentService paymentService, Paytm paytm) {
+        this.paymentService1 = paymentService;
+        this.paytm = paytm;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication application = new SpringApplication(BeanManagementApplication.class);
+        applicationContext = application.run(args);
+        shutdownPoller();
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        paymentService1.running();
+        paytm.pay();
+    }
+
+
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanManagementApplication.class);
 	private static final File shutdownDir = new File("bin");
 	private static ConfigurableApplicationContext applicationContext;
 	private static volatile boolean shuttingDown = false;
 
-	@Autowired
-	private PaymentService paymentService1;
 
-	@Autowired
-	private PaymentService paymentService2;
+//	private final NotificationService notificationService;
 
-	private final NotificationService notificationService;
-
-	@Autowired
-	public BeanManagementApplication(@Qualifier("email")  NotificationService notificationService) {
-		this.notificationService = notificationService;
-	}
+//	@Autowired
+//	public BeanManagementApplication(@Qualifier("email")  NotificationService notificationService) {
+//		this.notificationService = notificationService;
+//	}
 
 	@Autowired
 	private Map<String, NotificationService> gatewayService;
 
-	public static void main(String[] args) {
-		SpringApplication application = new SpringApplication(BeanManagementApplication.class);
-		applicationContext = application.run(args);
-		shutdownPoller();
-	}
 
 	public static void stopApplication() {
 		LOGGER.info("Shutting down application...");
@@ -97,14 +111,14 @@ public class BeanManagementApplication implements CommandLineRunner {
 		return true;
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		paymentService1.running();
-		paymentService2.running();
-		notificationService.sendNotification();
-		for (Map.Entry<String, NotificationService> notificationServiceEntry : gatewayService.entrySet()) {
-			LOGGER.info("{} -> {}", notificationServiceEntry.getKey(), (notificationServiceEntry.getValue().heartBeat()));
-		}
+//	@Override
+//	public void run(String... args) throws Exception {
+//		paymentService1.running();
+//		paymentService2.running();
+//		notificationService.sendNotification();
+//		for (Map.Entry<String, NotificationService> notificationServiceEntry : gatewayService.entrySet()) {
+//			LOGGER.info("{} -> {}", notificationServiceEntry.getKey(), (notificationServiceEntry.getValue().heartBeat()));
+//		}
+//	}
 
-	}
 }

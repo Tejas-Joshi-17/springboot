@@ -14,12 +14,11 @@ import org.springframework.web.context.WebApplicationContext;
 public class Person {
 
     private static final Logger log = LoggerFactory.getLogger(Person.class);
-    static int studentCount = 10;
 
     @PostConstruct
-    public void walkup() {
-        log.info("Person is Creating");
-        log.info("Student Count :- {}", ++studentCount);
+    public void walkUp() {
+        log.info("-------------------------->");
+        log.info("Person (Object) is Creating");
     }
 
     public void living() {
@@ -28,7 +27,7 @@ public class Person {
 
     @PreDestroy
     public void sleeping() {
-        log.info("Person is Dead Now");
+        log.info("Person (Object) is Dead Now");
     }
 
 }

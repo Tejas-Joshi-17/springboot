@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'NAMCO - BIG'
+echo 'Bean Management'
 
 export SERVER_PORT=13020
 export ENABLE_PAYLOAD_ENCRYPTION="false"
