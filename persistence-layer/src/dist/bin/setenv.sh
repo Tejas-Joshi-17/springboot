@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export BIG_JVM_OPTIONS=${BIG_JVM_OPTIONS:-"-Xmx512M -Xms216M"}
+
+export SERVER_PORT=9001
+export BIG_JVM_OPTIONS="-Xmx2048M -Xms250M"

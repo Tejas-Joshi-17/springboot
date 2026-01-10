@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd "$(dirname "$0")" || exit;
+echo Stopping @projectname@ ...
+echo Please check logs for more details ...
+touch ./.shutdown

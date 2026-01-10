@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"/.. || exit 1
+
+
+rm -f .shutdown
+
+java -Dappname=@projectname@ \
+    -Duser.name=admin \
+    -Dcom.sun.management.jmxremote \
+    -Xlog:gc:logs/gc.log \
+    -Dorg.mortbay.xml.XmlParser.NotValidating=true \
+    -Djava.net.preferIPv4Stack=true \
+    -XX:+ParallelRefProcEnabled \
+    -XX:+TieredCompilation \
+    -Djava.io.tmpdir=./logs \
+    -Duser.timezone="Asia/Kolkata"\
+    ${BIG_JVM_OPTIONS} \
+    -jar @jarname@ "$@"
