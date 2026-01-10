@@ -2,28 +2,28 @@
 
 mkdir -p ../logs
 
-if [ -f `dirname $0`/setenv.sh ]
+if [ -f "$(dirname $0)"/setenv.sh ]
 then
-  . `dirname $0`/setenv.sh
+  . "$(dirname $0)"/setenv.sh
 else
   echo "WARNING: setenv.sh not found, environment may not be setup correctly."
 fi
 
-if [ -x `dirname $0`/checkenv.sh ]
+if [ -x "$(dirname $0)"/checkenv.sh ]
 then
-  `dirname $0`/checkenv.sh || exit 1
+  "$(dirname $0)"/checkenv.sh || exit 1
 fi
 
-cd `dirname $0`
+cd "$(dirname $0)" || exit;
 
-CNT=`find .. -maxdepth 1 -type f  -name "@jarname@*" -printf '.' | wc -m`
+CNT="$(find .. -maxdepth 1 -type f  -name "@jarname@*" -printf '.' | wc -m)"
 if [ "$CNT" != "1" ]
 then
   echo Please ensure Single Application JAR present in the switch folder. Exiting...
   exit 1
 fi
 
-CNT=`ps -ef | grep -v grep | grep '@jarname@'| wc -l`
+CNT="$(ps -ef | grep -v grep | grep '@jarname@'| wc -l)"
 if [ "$CNT" != "0" ]
 then
   echo Application is already running.
