@@ -1,0 +1,106 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.9'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.sarvatra'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Learning input validation'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+def derivedVersion = ''
+def lombokVersion = '1.18.30'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+	implementation("org.springframework.boot:spring-boot-starter-validation:3.4.13")
+
+	// Lombok support
+	compileOnly "org.projectlombok:lombok:$lombokVersion"
+	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+}
+
+
+tasks.register('createBuildTimestampPropertyFile', BuildTimestampTask) {
+	outputFile = "$sourceSets.main.output.resourcesDir/buildinfo.properties" as File
+}
+
+tasks.register('assembleArtifact', Tar) {
+	def buildFolder = project.name + '-' + project.version
+	def archiveName = "namco-big-${version}.tar"
+	into(buildFolder + '/bin') {
+		from 'build/libs'
+		include '*.jar'
+	}
+	into(buildFolder + '/bin') {
+		from '.'
+		include 'version-info.txt'
+	}
+	into(buildFolder + '/start_stop') {
+		from 'src/start_stop'
+		include '*.sh'
+	}
+	into(buildFolder + '/appdata/tmp') {
+		from 'src/appdata/tmp'
+		include 'README.md'
+	}
+	into(buildFolder + '/conf') {
+		from 'src/main/resources'
+		include '*.properties'
+		include '*.xml'
+	}
+	into(buildFolder + '/conf') {
+		from '.'
+		include 'setenv.sh'
+	}
+	into(buildFolder + '/db') {
+		from "db_patches/${derivedVersion}"
+		include '*.sql'
+	}
+	into(buildFolder + '/') {
+		from "documents/release_notes/${derivedVersion}"
+		include '*.md'
+	}
+
+}
+
+processResources.dependsOn(createBuildTimestampPropertyFile)
+
+
+class BuildTimestampTask extends DefaultTask {
+	// We don't want to declare @OutputFile,
+	// we need a fresh timestamp on every run
+	@OutputFile
+	File outputFile
+
+	@TaskAction
+	void writeFile() {
+		new File(outputFile.parent).mkdirs()
+		Properties props = new Properties()
+		props.put("projectName", project.name.toString())
+		props.put("version", project.version.toString())
+		props.put("project", "Namco - BIG")
+		props.put("buildTimestamp", new Date().format("yyyy-MM-dd HH:mm:ss z"))
+		props.store(new FileOutputStream(outputFile), "Build Properties")
+	}
+}
+
+jar {
+	exclude('com/sarvatra/test/**')
+}
+
+
+apply from: 'app.gradle'
