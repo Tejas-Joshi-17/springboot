@@ -54,7 +54,7 @@
         <appender-ref ref="Console"/>
     </root>
 
-    <logger name="com.sarvatra" level="info" additivity="false">
+    <logger name="com.sarvatra" level="debug" additivity="false">
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="Console"/>
     </logger>
@@ -64,11 +64,5 @@
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="Console"/>
     </logger>
-
-    <!-- Hibernate query parameters -->
-<!--    <logger name="org.hibernate.type.descriptor.sql" level="trace" additivity="false">-->
-<!--        <appender-ref ref="RollingFile"/>-->
-<!--        <appender-ref ref="Console"/>-->
-<!--    </logger>-->
 
 </configuration>
