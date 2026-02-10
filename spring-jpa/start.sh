@@ -8,9 +8,9 @@ then
   cd ../../../../ || exit
   gradle clean iA
   # cd $BUILD_FOLDER || exit
-  # bash start
+  # bash $BUILD_FOLDER/start
 else
   gradle clean iA
   # cd $BUILD_FOLDER || exit
-  # bash start
+  # bash $BUILD_FOLDER/start
 fi

@@ -31,10 +31,10 @@ public class Product {
     private Long id;
 
     @Column(nullable = false, length = 20)
-    private String sku;
+    private String productName;
 
-    @Column(name = "title_x")
-    private String title;
+    @Column(name = "prod_type")
+    private String productType;
 
     private BigDecimal price;
 
@@ -50,8 +50,8 @@ public class Product {
     public String toString() {
         return "{\n" +
                "  \"id\": " + id + ",\n" +
-               "  \"sku\": \"" + sku + "\",\n" +
-               "  \"title\": \"" + title + "\",\n" +
+               "  \"product-name\": \"" + productName + "\",\n" +
+               "  \"product-type\": \"" + productType + "\",\n" +
                "  \"price\": " + price + ",\n" +
                "  \"quantity\": " + quantity + ",\n" +
                "  \"createdAt\": \"" + createdAt + "\",\n" +

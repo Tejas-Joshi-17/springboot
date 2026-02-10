@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SERVER_PORT=13011
+export SERVER_PORT=13014
 export ENABLE_PAYLOAD_ENCRYPTION="false"
 export FORCE_PAYLOAD_ENCRYPTION="false"
 export PAYLOAD_SERVER_TUNNEL_ENABLED="false"
