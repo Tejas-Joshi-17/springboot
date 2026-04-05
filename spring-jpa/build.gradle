@@ -98,10 +98,6 @@ class BuildTimestampTask extends DefaultTask {
 	}
 }
 
-jar {
-	exclude('com/sarvatra/test/**')
-}
-
 apply from: 'app.gradle'
 
 tasks.named('test') {

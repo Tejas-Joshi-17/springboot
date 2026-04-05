@@ -42,9 +42,7 @@ def bigCopySpec = copySpec {
             exclude '**/*.ico'
             exclude '**/*.war'
             exclude '**/*.dat'
-            filePermissions {
-                unix("700") // 0700
-            }
+            fileMode 0700
             filter(
                     org.apache.tools.ant.filters.ReplaceTokens,
                     tokens: targetConfiguration
@@ -56,9 +54,7 @@ def bigCopySpec = copySpec {
             include 'keys/*.jks'
             include 'cfg/*.ser'
             include 'cfg/authorized_keys'
-            filePermissions {
-                unix("600") // 0700
-            }
+            fileMode 0600
         }
         from(file("src/dist")) {
             include '**/*.jpg'
