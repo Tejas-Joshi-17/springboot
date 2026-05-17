@@ -49,18 +49,19 @@
         </rollingPolicy>
     </appender>
 
-    <root level="trace">
+    <root level="info">
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="Console"/>
     </root>
 
-    <logger name="com.sarvatra" level="trace" additivity="false">
+    <logger name="com.sarvatra" level="info" additivity="false">
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="Console"/>
     </logger>
 
     <!-- Hibernate SQL -->
-    <logger name="org.hibernate.SQL" level="debug" additivity="false">
+<!--    <logger name="org.hibernate.SQL" level="debug" additivity="false">-->
+    <logger name="org.hibernate.SQL" level="info" additivity="false">
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="Console"/>
     </logger>
