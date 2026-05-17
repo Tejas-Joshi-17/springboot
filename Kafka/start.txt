@@ -1,0 +1,10 @@
+
+# Starting Kafka in Background
+sudo nohup ./bin/kafka-server-start.sh ./config/kraft/server.properties &> /dev/null &
+
+# Staring UI
+sudo docker run -d -e DYNAMIC_CONFIG_ENABLED=true --name kafka-ui --network host provectuslabs/kafka-ui
+
+# Start PostgreSQL Database
+sudo docker run --name postgres-db   -v postgresql-data:/var/lib/postgresql   -e POSTGRES_PASSWORD=password   -d -p 5432:5432   postgres:latest
+

@@ -1,0 +1,7 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  consumer:
+    group-id: ${spring.application.name}
+    key-derializer: org.apache.kafka.common.serialization.LongDeserializer
+    value-derializer: org.apache.kafka.common.serialization.JsonDeserializer
