@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: api-gateway
+
+  #api gateway config
+  cloud:
+    gateway:
+      routes:
+        - id: order-service            # application name of service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**, /api/v1/cbs/**
+
+        - id: inventory-service
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path=/api/v1/inventory/**, /api/v1/products/**, /api/v1/cbs/**
+          filters:
+            - AddRequestHeader=X-Custom-Header, Anuj
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

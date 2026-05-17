@@ -1,0 +1,44 @@
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  retry:
+    configs:
+      default:
+        maxRetryAttempts: 3
+        waitDuration: 100ms
+    instances:
+      beneficiaryService:
+        max-attempts: 3
+        wait-duration: 10s
+        retry-exceptions:
+          - feign.RetryableException
+          - java.lang.Exception
+
+  ratelimiter:
+    instances:
+      cbsRateLimiter:
+        limitRefreshPeriod: 30s         # Refresh the limit after every 30 seconds
+        limitForPeriod: 3               # Max 3 calls in a refresh period
+        timeoutDuration: 5s             # Time to wait for permission before a request fails
+
+  circuitbreaker:
+    instances:
+      inventoryCircuitBreaker:
+        registerHealthIndicator: true     # Expose circuit breaker health via the actuator
+        slidingWindowSize: 10             # Size of the sliding window for call recording
+        slidingWindowType: COUNT_BASED    # Use count-based sliding window
+        minimumNumberOfCalls: 10          # Minimum number of calls before calculating failure rate
+        failureRateThreshold: 50          # If 50% (5 out of 10) calls fail, the circuit goes to OPEN state
+        waitDurationInOpenState: 1s       # Time the circuit stays OPEN before moving to HALF_OPEN
+        permittedNumberOfCallsInHalfOpenState: 3  # Number of test calls in HALF_OPEN state
+        eventConsumerBufferSize: 10       # Buffer size for event logs
