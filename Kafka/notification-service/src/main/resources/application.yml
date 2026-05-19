@@ -3,5 +3,9 @@ spring:
     bootstrap-servers: localhost:9092
   consumer:
     group-id: ${spring.application.name}
-    key-derializer: org.apache.kafka.common.serialization.LongDeserializer
-    value-derializer: org.apache.kafka.common.serialization.JsonDeserializer
+    key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    properties:
+      spring.json.trusted.packages: com.sarvatra.event.*
+      spring.json.use.type.headers: false
+      spring.json.value.default.type: com.sarvatra.event.UserCreatedEvent

@@ -1,5 +1,6 @@
 package com.sarvatra.consumer;
 
+import com.sarvatra.event.UserCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserKafkaConsumer {
 
-    @KafkaListener(topics = "user-created-topic")
+    @KafkaListener(topics = "delivery-topic", groupId = "delivery-service")
     public void handleUserCreated(UserCreatedEvent userCreatedEvent) {
         log.info("handleUserCreated: {}", userCreatedEvent);
     }

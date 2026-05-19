@@ -22,7 +22,7 @@ public class UserController {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping(path = "/order")
     public ResponseEntity<String> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
         userService.createUser(createUserRequestDto);
         return ResponseEntity.ok("User is created");
