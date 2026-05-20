@@ -59,5 +59,17 @@
         <appender-ref ref="Console"/>
     </logger>
 
+    <!-- Hibernate SQL -->
+    <logger name="org.hibernate.SQL" level="debug" additivity="false">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <!-- Hibernate Bind Parameters -->
+    <logger name="org.hibernate.orm.jdbc.bind" level="trace" additivity="false">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
 
 </configuration>

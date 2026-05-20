@@ -58,11 +58,13 @@ public class EmployeeService {
     @CachePut(cacheNames = "employeeCache", key = "#id")
     public ResponseEntity<EmployeeDto> updateEmployee(Long id, EmployeeDto employeeDto) {
         log.info("Updating Employee Details with ud :- {}", id);
-        Employee employee1 = Employee.builder()
-                .name(employeeDto.getName())
-                .email(employeeDto.getEmail())
-                .salary(employeeDto.getSalary())
-                .build();
+        Employee employee1 = employeeRepository.findById(id).orElse(null);
+
+        employee1.setEmail(employeeDto.getEmail());
+        employee1.setName(employeeDto.getName());
+        employee1.setSalary(employeeDto.getSalary());
+
+        employeeRepository.save(employee1);
 
         employeeRepository.save(employee1);
         return new ResponseEntity<>(employeeDto, HttpStatusCode.valueOf(200));
