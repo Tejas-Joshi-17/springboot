@@ -2,8 +2,8 @@
 <configuration scan="true" scanPeriod="300 seconds">
 
     <property name="LOGS" value="./logs"/>
-    <property name="FILE_NAME" value="springboot-caching.log"/>
-    <property name="FILE_NAME_ERROR" value="springboot-caching-error.log"/>
+    <property name="FILE_NAME" value="redis-caching.log"/>
+    <property name="FILE_NAME_ERROR" value="redis-caching-error.log"/>
     <appender name="Console"
               class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -66,10 +66,10 @@
     </logger>
 
     <!-- Hibernate Bind Parameters -->
-    <logger name="org.hibernate.orm.jdbc.bind" level="trace" additivity="false">
-        <appender-ref ref="RollingFile"/>
-        <appender-ref ref="Console"/>
-    </logger>
+    <!--    <logger name="org.hibernate.orm.jdbc.bind" level="trace" additivity="false">-->
+    <!--        <appender-ref ref="RollingFile"/>-->
+    <!--        <appender-ref ref="Console"/>-->
+    <!--    </logger>-->
 
 
 </configuration>

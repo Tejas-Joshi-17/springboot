@@ -15,21 +15,21 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping(path = "/{id}")
-    private ResponseEntity<String> getEmployeeById(@PathVariable Long id) {
-        employeeService.getEmployeeById(id);
-        return new ResponseEntity<>("Fetched Employee Details", HttpStatusCode.valueOf(200));
+    private ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long id) {
+        final EmployeeDto employeeDetails = employeeService.getEmployeeById(id);
+        return new ResponseEntity<>(employeeDetails, HttpStatusCode.valueOf(200));
     }
 
     @PostMapping
-    public ResponseEntity<String> addEmployee(@RequestBody EmployeeDto employee) {
-        final ResponseEntity<EmployeeDto> newAddedEmployee = employeeService.addEmployee(employee);
-        return new ResponseEntity<>("New Employee Added", HttpStatusCode.valueOf(200));
+    public ResponseEntity<EmployeeDto> addEmployee(@RequestBody EmployeeDto employee) {
+        final EmployeeDto newAddedEmployee = employeeService.addEmployee(employee);
+        return new ResponseEntity<>(newAddedEmployee, HttpStatusCode.valueOf(200));
     }
 
     @PutMapping(path = "/{id}")
-    private ResponseEntity<String> updateEmployeeById(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
-        employeeService.updateEmployee(id, employeeDto);
-        return new ResponseEntity<>("Employee Details Updated", HttpStatusCode.valueOf(200));
+    private ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
+        final EmployeeDto updateEmployee = employeeService.updateEmployee(id, employeeDto);
+        return new ResponseEntity<>(updateEmployee, HttpStatusCode.valueOf(200));
     }
 
     @DeleteMapping(path = "/{id}")

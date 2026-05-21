@@ -22,22 +22,23 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Cacheable(cacheNames = "employeeCache", key = "#id")
-    public ResponseEntity<EmployeeDto> getEmployeeById(Long id) {
+    public EmployeeDto getEmployeeById(Long id) {
         log.info("Fetching Employee Details with id :- {}", id);
         final Employee employeeDetails = employeeRepository.findById(id).orElse(null);
 
-        EmployeeDto employee = EmployeeDto.builder()
-                .id(id)
+        return EmployeeDto.builder()
+                .id(employeeDetails.getId())
                 .name(employeeDetails.getName())
                 .email(employeeDetails.getEmail())
                 .salary(employeeDetails.getSalary())
                 .build();
-        return new ResponseEntity<>(employee, HttpStatusCode.valueOf(200));
     }
 
-    @CachePut(cacheNames = "employeeCache", key = "#result.body.getId()")
-    public ResponseEntity<EmployeeDto> addEmployee(EmployeeDto employee) {
+    // result = EmployeeDto
+    @CachePut(cacheNames = "employeeCache", key = "#result.getId()")
+    public EmployeeDto addEmployee(EmployeeDto employee) {
         log.info("Adding Employee with email :- {}", employee.getEmail());
+
         Employee employee1 = Employee.builder()
                 .name(employee.getName())
                 .email(employee.getEmail())
@@ -45,18 +46,17 @@ public class EmployeeService {
                 .build();
 
         final Employee addedEmployee = employeeRepository.save(employee1);
-        EmployeeDto newEmployee = EmployeeDto.builder()
-                .id(addedEmployee.getId())
-                .name(employee.getName())
-                .email(employee.getEmail())
-                .salary(employee.getSalary())
-                .build();
 
-        return new ResponseEntity<>(newEmployee, HttpStatusCode.valueOf(200));
+        return EmployeeDto.builder()
+                .id(addedEmployee.getId())
+                .name(addedEmployee.getName())
+                .email(addedEmployee.getEmail())
+                .salary(addedEmployee.getSalary())
+                .build();
     }
 
     @CachePut(cacheNames = "employeeCache", key = "#id")
-    public ResponseEntity<EmployeeDto> updateEmployee(Long id, EmployeeDto employeeDto) {
+    public EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) {
         log.info("Updating Employee Details with ud :- {}", id);
         Employee employee1 = employeeRepository.findById(id).orElse(null);
 
@@ -66,8 +66,7 @@ public class EmployeeService {
 
         employeeRepository.save(employee1);
 
-        employeeRepository.save(employee1);
-        return new ResponseEntity<>(employeeDto, HttpStatusCode.valueOf(200));
+        return employeeDto;
     }
 
     @CacheEvict(cacheNames = "employeeCache", key = "#id")

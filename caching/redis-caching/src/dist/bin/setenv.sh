@@ -1,0 +1,41 @@
+#!/bin/bash
+
+export SERVER_PORT=13022
+export ENABLE_PAYLOAD_ENCRYPTION="false"
+export FORCE_PAYLOAD_ENCRYPTION="false"
+export PAYLOAD_SERVER_TUNNEL_ENABLED="false"
+export CBS_CONSUMER_KEY="cbs123"
+
+export BIG_JVM_OPTIONS="-Xmx2048M -Xms250M"
+
+export NAMCO_USE_OPENID=false
+export TRUST_STORE=keys/server.jks
+export TRUST_STORE_PASSWORD=
+export KEY_STORE=keys/keystore.jks
+export KEY_STORE_PASSWORD=
+export PROXY_SERVER=10.121.171.130
+export PROXY_PORT=3128
+export USE_PROXY=false
+
+export MASKING_ENABLED=false
+
+if [[ $MASKING_ENABLED == true ]]
+then
+  export PAYLOAD_LOGGING_RULES_FILE=cfg/json-payload-logging-rules.json
+  echo "payload masking enabled ...."
+fi
+
+# The timeout when requesting a connection from the connection manager.
+export BIG_VALIDATE_INSTITUTE=true
+
+export SERVER_CONNECTION_TIMEOUT=25000
+export SERVER_TOMCAT_ACCEPT_COUNT=500
+export SERVER_TOMCAT_MAX_CONNECTIONS=500
+export SERVER_TOMCAT_MAX_THREADS=500
+export SERVER_TOMCAT_MIN_THREADS=15
+
+export SERVER_RESTTEMPLATE_SOCKET_TIMEOUT=15000
+export SERVER_RESTTEMPLATE_CONNECTIONS_MAX=300
+export SERVER_RESTTEMPLATE_CONNECTIONS_MAXPERROUTE=300
+export SERVER_RESTTEMPLATE_KEEPALIVE_TIME=20000
+export SERVER_RESTTEMPLATE_IDLE_TIME=30
