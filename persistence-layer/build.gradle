@@ -107,5 +107,3 @@ jar {
 //tasks.named('test') {
 //	useJUnitPlatform()
 //}
-
-apply from: 'app.gradle'

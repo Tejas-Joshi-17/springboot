@@ -1,9 +1,13 @@
 package com.sarvatra.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "employees")
 public class EmployeeEntity {
@@ -18,7 +22,7 @@ public class EmployeeEntity {
 
     private Integer age;
 
-    private LocalDate dateOfJoining;
+    private LocalDateTime dateOfJoining;
 
     private Boolean isActive;
 

@@ -1,5 +1,5 @@
 
-BUILD_FOLDER="build/install/persistence-layer/bin"
+BUILD_FOLDER="build/install/persistence-and-service-layer/bin"
 
 if [[ -d $BUILD_FOLDER ]]
 then
