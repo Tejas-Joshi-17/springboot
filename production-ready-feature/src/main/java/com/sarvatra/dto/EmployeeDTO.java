@@ -3,8 +3,6 @@ package com.sarvatra.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,7 +22,4 @@ public class EmployeeDTO {
 
     private Double salary;
 
-    private LocalDate dateOfJoining;
-
-    private Boolean isActive;
 }

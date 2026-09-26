@@ -26,7 +26,7 @@ public class EmployeeClientImpl implements EmployeeClient {
         try {
             log.info("Attempting to call the restClient Method in getAllEmployees");
             ApiResponse<List<EmployeeDTO>> employeeDTOList = restClient.get()
-                    .uri("employees")
+                    .uri("/employees")
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
                         log.error(new String(res.getBody().readAllBytes()));
@@ -34,8 +34,7 @@ public class EmployeeClientImpl implements EmployeeClient {
                     })
                     .body(new ParameterizedTypeReference<>() {
                     });
-            log.debug("Successfully retrieved the employees in getAllEmployees");
-            log.trace("Retrieved employees list in getAllEmployees : {}, {}, {}", employeeDTOList.getData(), "Hello", 5);
+            log.info("Successfully retrieved the employees in getAllEmployees");
             return employeeDTOList.getData();
         } catch (Exception e) {
             log.error("Exception occurred in getAllEmployees", e);
@@ -48,7 +47,7 @@ public class EmployeeClientImpl implements EmployeeClient {
         log.trace("Trying to get Employee By Id in getEmployeeById with id: {}", employeeId);
         try {
             ApiResponse<EmployeeDTO> employeeResponse = restClient.get()
-                    .uri("employees/{employeeId}", employeeId)
+                    .uri("/employees/{employeeId}", employeeId)
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
                         log.error(new String(res.getBody().readAllBytes()));
@@ -56,6 +55,8 @@ public class EmployeeClientImpl implements EmployeeClient {
                     })
                     .body(new ParameterizedTypeReference<>() {
                     });
+
+            log.info("callig url :- {}", restClient.get());
             return employeeResponse.getData();
         } catch (Exception e) {
             log.error("Exception occurred in getAllEmployees", e);
@@ -68,7 +69,7 @@ public class EmployeeClientImpl implements EmployeeClient {
         log.trace("Trying to create Employee with information {}", employeeDTO);
         try {
             ResponseEntity<ApiResponse<EmployeeDTO>> employeeDTOApiResponse = restClient.post()
-                    .uri("employees")
+                    .uri("/employees")
                     .body(employeeDTO)
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
@@ -79,6 +80,7 @@ public class EmployeeClientImpl implements EmployeeClient {
                     .toEntity(new ParameterizedTypeReference<>() {
                     });
             log.trace("Successfully created a new employee : {}", employeeDTOApiResponse.getBody());
+            log.info("getting :- {}", employeeDTOApiResponse.getBody());
             return employeeDTOApiResponse.getBody().getData();
         }
         catch (Exception e) {
