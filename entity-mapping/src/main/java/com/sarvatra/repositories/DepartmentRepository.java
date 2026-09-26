@@ -1,9 +1,9 @@
 package com.sarvatra.repositories;
 
-import com.sarvatra.entity.Orders;
+import com.sarvatra.problem.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrdersRepository extends JpaRepository<Orders, Long> {
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
 }
