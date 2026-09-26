@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.sarvatra'
 version = '0.0.1-SNAPSHOT'
-description = 'Demo project for Spring Boot'
+description = 'Demo project for Sp ring Boot'
 
 java {
 	toolchain {
@@ -63,7 +63,6 @@ tasks.register('assembleArtifact', Tar) {
 
 }
 
-apply from: 'app.gradle'
 
 tasks.named('test') {
 	useJUnitPlatform()

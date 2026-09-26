@@ -34,9 +34,7 @@ public class BeanManagementApplication implements CommandLineRunner{
     }
 
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(BeanManagementApplication.class);
-        applicationContext = application.run(args);
-        shutdownPoller();
+        SpringApplication.run(BeanManagementApplication.class, args);
     }
 
     @Override
@@ -45,12 +43,6 @@ public class BeanManagementApplication implements CommandLineRunner{
         paytm.pay();
     }
 
-
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(BeanManagementApplication.class);
-	private static final File shutdownDir = new File("bin");
-	private static ConfigurableApplicationContext applicationContext;
-	private static volatile boolean shuttingDown = false;
 
 
 //	private final NotificationService notificationService;
@@ -63,53 +55,6 @@ public class BeanManagementApplication implements CommandLineRunner{
 	@Autowired
 	private Map<String, NotificationService> gatewayService;
 
-
-	public static void stopApplication() {
-		LOGGER.info("Shutting down application...");
-		if (applicationContext != null) {
-			LOGGER.info("Shutting down SpringApplication...");
-			System.exit(SpringApplication.exit(applicationContext, () -> 0));
-		}
-
-		System.exit(0);
-	}
-
-	private static void shutdownPoller() {
-		Path dir = Paths.get(shutdownDir.getAbsolutePath());
-		FileSystem fs = dir.getFileSystem();
-
-		try (WatchService watchService = fs.newWatchService()) {
-			dir.register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE);
-			while (!shuttingDown) {
-				if (!waitForChanges(watchService) || shuttingDown) break;
-			}
-
-		} catch (IOException e) {
-			LOGGER.info("File Not Found");
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
-		stopApplication();
-	}
-
-	private static boolean waitForChanges(WatchService service) throws InterruptedException {
-		WatchKey key = service.poll(2500, TimeUnit.MILLISECONDS);
-		if (key != null) {
-			for (WatchEvent<?> ev : key.pollEvents()) {
-				if (ev.context().toString().equals(".shutdown")) {
-					File file = new File("bin/.shutdown");
-					if (file.exists()) {
-						shuttingDown = true;
-					}
-				}
-			}
-			if (!key.reset()) {
-				LOGGER.info("deploy directory no longer valid");
-				return false; // deploy directory no longer valid
-			}
-		}
-		return true;
-	}
 
 //	@Override
 //	public void run(String... args) throws Exception {
