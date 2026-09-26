@@ -1,9 +1,9 @@
 package com.sarvatra.repositories;
 
-import com.sarvatra.entity.Product;
+import com.sarvatra.entities.PostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface PostRepository extends JpaRepository<PostEntity, Long> {
 }
