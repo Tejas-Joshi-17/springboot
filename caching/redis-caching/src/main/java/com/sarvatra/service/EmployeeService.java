@@ -20,8 +20,9 @@ import java.util.Optional;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private static final String CACHE_NAME = "employeeCache";
 
-    @Cacheable(cacheNames = "employeeCache", key = "#id")
+    @Cacheable(cacheNames = CACHE_NAME, key = "#id")
     public EmployeeDto getEmployeeById(Long id) {
         log.info("Fetching Employee Details with id :- {}", id);
         final Employee employeeDetails = employeeRepository.findById(id).orElse(null);
@@ -35,7 +36,7 @@ public class EmployeeService {
     }
 
     // result = EmployeeDto
-    @CachePut(cacheNames = "employeeCache", key = "#result.getId()")
+    @CachePut(cacheNames = CACHE_NAME, key = "#result.getId()")
     public EmployeeDto addEmployee(EmployeeDto employee) {
         log.info("Adding Employee with email :- {}", employee.getEmail());
 
@@ -55,7 +56,7 @@ public class EmployeeService {
                 .build();
     }
 
-    @CachePut(cacheNames = "employeeCache", key = "#id")
+    @CachePut(cacheNames = CACHE_NAME, key = "#id")
     public EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) {
         log.info("Updating Employee Details with ud :- {}", id);
         Employee employee1 = employeeRepository.findById(id).orElse(null);
@@ -69,7 +70,7 @@ public class EmployeeService {
         return employeeDto;
     }
 
-    @CacheEvict(cacheNames = "employeeCache", key = "#id")
+    @CacheEvict(cacheNames = CACHE_NAME, key = "#id")
     public ResponseEntity<Boolean> deleteEmployee(Long id) {
         log.info("Deleted Employee Details with id :- {}", id);
         employeeRepository.deleteById(id);
