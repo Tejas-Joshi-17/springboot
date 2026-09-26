@@ -1,0 +1,6 @@
+--INSERT INTO posts (title, description, author_id)
+--VALUES (
+--    'India Win World Cup',
+--    'India Win World Cup after 16 years',
+--    1
+--);

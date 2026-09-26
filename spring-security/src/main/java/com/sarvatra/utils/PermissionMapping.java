@@ -1,0 +1,32 @@
+package com.sarvatra.utils;
+
+import com.sarvatra.entities.enums.Permission;
+import com.sarvatra.entities.enums.Role;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.sarvatra.entities.enums.Permission.*;
+import static com.sarvatra.entities.enums.Role.*;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class PermissionMapping {
+
+    private static final Map<Role, Set<Permission>> map = Map.of(
+            USER, Set.of(USER_VIEW, POST_VIEW),
+            CREATOR, Set.of(POST_CREATE, USER_UPDATE, POST_UPDATE),
+            ADMIN, Set.of(POST_CREATE, USER_UPDATE, POST_UPDATE, USER_DELETE, USER_CREATE, POST_DELETE)
+    );
+
+    public static Set<SimpleGrantedAuthority> getAuthoritiesForRole(Role role) {
+        return map.get(role).stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                .collect(Collectors.toSet());
+    }
+
+
+}
