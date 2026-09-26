@@ -1,24 +1,23 @@
-package com.sarvatra.entity;
+package com.sarvatra.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
-public class OrderItem {
+public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long productId;
+    private String name;
 
-    private Integer quantity;
-
-    @ManyToOne()
-    @JoinColumn(name = "order_id")
-    private Orders order;
+    @ManyToMany(mappedBy = "courses")
+    private List<Student> students;
 
 }

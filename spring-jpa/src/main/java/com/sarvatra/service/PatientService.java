@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @Service
 public class PatientService {
@@ -26,6 +28,21 @@ public class PatientService {
         Patient patient = patientRepository.findById(patientId).orElseThrow();
         patient.setInsurance(null);
         return patient;
+    }
+
+    public Patient updatePatientMailId(Long patientId, String email) {
+        final Optional<Patient> patient = patientRepository.findById(patientId);
+        Patient patient1 = patient.get();
+        patient1.setEmail(email);
+        return patient1;
+    }
+
+    @Transactional
+    public Patient updatePatientEmailId(Long patientId, String email) {
+        final Optional<Patient> patient = patientRepository.findById(patientId);
+        Patient patient1 = patient.get();
+        patient1.setEmail(email);
+        return patient1;
     }
 
 }

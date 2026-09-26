@@ -27,7 +27,7 @@ public class Doctor {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor")         // one docker -> many appointments
     private List<Appointment> appointmentList = new ArrayList<>();      // Inverse Side
 
 }

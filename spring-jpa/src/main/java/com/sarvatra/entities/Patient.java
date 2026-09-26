@@ -1,5 +1,6 @@
 package com.sarvatra.entities;
 
+import com.sarvatra.entities.type.BloodGroupType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,27 +30,15 @@ public class Patient {
     private String gender;
 
     @Enumerated(value = EnumType.STRING)
-    private BloodGroup bloodGroup;
+    private BloodGroupType bloodGroup;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)       // One-Patient -> One-Insurance
-    @JoinColumn(name = "patient_insurance")
+    @JoinColumn(name = "patient_insurance_id")
     private Insurance insurance;    // Owning Side
 
     @OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL})
     private List<Appointment> appointmentList = new ArrayList<>();  // Inverse Side
-
-    public enum BloodGroup {
-        A_POSITIVE,
-        A_NEGATIVE,
-        B_POSITIVE,
-        B_NEGATIVE,
-        AB_POSITIVE,
-        AB_NEGATIVE,
-        O_POSITIVE,
-        O_NEGATIVE
-    }
-
 }

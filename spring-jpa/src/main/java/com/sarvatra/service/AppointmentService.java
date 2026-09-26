@@ -23,7 +23,7 @@ public class AppointmentService {
         final Patient patient = patientRepository.findById(patientId).orElseThrow();
         final Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
 
-        appointment.setPatient(patient);
+//        appointment.setPatient(patient);
         appointment.setDoctor(doctor);
 
         appointmentRepository.save(appointment);

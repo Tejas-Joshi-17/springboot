@@ -44,3 +44,19 @@ VALUES
     ('Dr. Rakesh Mehta', 'Cardiology', 'rakesh.mehta@example.com'),
     ('Dr. Sneha Kapoor', 'Dermatology', 'sneha.kapoor@example.com'),
     ('Dr. Arjun Nair', 'Orthopedics', 'arjun.nair@example.com');
+
+INSERT INTO customer (name)
+VALUES
+    ('Tejas Joshi'),
+    ('Sachin Tendulkar'),
+    ('Virat Kohli');
+
+INSERT INTO orders (order_name, customer_id)
+VALUES
+    ('Pencil', 1),
+    ('Pen', 1),
+    ('Bicycle', 2),
+    ('Biryani', 3),
+    ('Cup', 1),
+    ('Ball', 3),
+    ('Bat', 3);

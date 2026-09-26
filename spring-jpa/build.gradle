@@ -27,12 +27,16 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testCompileOnly 'org.projectlombok:lombok:1.18.30'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -42,7 +46,6 @@ tasks.register('createBuildTimestampPropertyFile', BuildTimestampTask) {
 
 tasks.register('assembleArtifact', Tar) {
 	def buildFolder = project.name + '-' + project.version
-	def archiveName = "namco-big-${version}.tar"
 	into(buildFolder + '/bin') {
 		from 'build/libs'
 		include '*.jar'
@@ -99,8 +102,6 @@ class BuildTimestampTask extends DefaultTask {
 		props.store(new FileOutputStream(outputFile), "Build Properties")
 	}
 }
-
-apply from: 'app.gradle'
 
 tasks.named('test') {
     useJUnitPlatform()

@@ -22,6 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByQuantityAndPrice(int quantity, BigDecimal price);
 
+    // JPQL
     @Query("SELECT p from Product p where p.productName=?1 and p.productType=?2")
     Optional<Product> findByProductNameAndProductType(String productName, String productType);
 
