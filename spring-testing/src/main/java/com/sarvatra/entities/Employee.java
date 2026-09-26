@@ -1,25 +1,24 @@
-package com.sarvatra.entity;
+package com.sarvatra.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Setter
 @Getter
+@Setter
+@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Table(name = "products")
-public class Product {
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String email;
+
     private String name;
 
-    private Double price;
-
-    private Integer stock;
-
+    private Long salary;
 }

@@ -1,0 +1,153 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.9'
+	id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+}
+
+group = 'com.sarvatra'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring JPA'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+jacoco {
+    toolVersion = "0.8.13"
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '3.4.11'
+}
+
+tasks.register('createBuildTimestampPropertyFile', BuildTimestampTask) {
+	outputFile = "$sourceSets.main.output.resourcesDir/buildinfo.properties" as File
+}
+
+tasks.register('assembleArtifact', Tar) {
+	def buildFolder = project.name + '-' + project.version
+	into(buildFolder + '/bin') {
+		from 'build/libs'
+		include '*.jar'
+	}
+	into(buildFolder + '/bin') {
+		from '.'
+		include 'version-info.txt'
+	}
+	into(buildFolder + '/start_stop') {
+		from 'src/start_stop'
+		include '*.sh'
+	}
+	into(buildFolder + '/appdata/tmp') {
+		from 'src/appdata/tmp'
+		include 'README.md'
+	}
+	into(buildFolder + '/conf') {
+		from 'src/main/resources'
+		include '*.properties'
+		include '*.xml'
+	}
+	into(buildFolder + '/conf') {
+		from '.'
+		include 'setenv.sh'
+	}
+	into(buildFolder + '/db') {
+		from "db_patches/${derivedVersion}"
+		include '*.sql'
+	}
+	into(buildFolder + '/') {
+		from "documents/release_notes/${derivedVersion}"
+		include '*.md'
+	}
+
+}
+
+processResources.dependsOn(createBuildTimestampPropertyFile)
+
+
+class BuildTimestampTask extends DefaultTask {
+	// We don't want to declare @OutputFile,
+	// we need a fresh timestamp on every run
+	@OutputFile
+	File outputFile
+
+	@TaskAction
+	void writeFile() {
+		new File(outputFile.parent).mkdirs()
+		Properties props = new Properties()
+		props.put("projectName", project.name.toString())
+		props.put("version", project.version.toString())
+		props.put("project", "Namco - BIG")
+		props.put("buildTimestamp", new Date().format("yyyy-MM-dd HH:mm:ss z"))
+		props.store(new FileOutputStream(outputFile), "Build Properties")
+	}
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('jacocoTestReport') {
+    dependsOn tasks.named('test')
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+tasks.named('jacocoTestCoverageVerification') {
+    dependsOn tasks.named('jacocoTestReport')
+
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+        }
+
+        rule {
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.70
+            }
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}

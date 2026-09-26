@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="300 seconds">
+
+    <property name="LOGS" value="./logs"/>
+    <property name="FILE_NAME" value="spring-testing.log"/>
+    <property name="FILE_NAME_ERROR" value="spring-testing-error.log"/>
+
+    <!-- Console -->
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+<!--                %green(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] -->
+                %yellow(%class{2}): %msg%n%throwable
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- Application logs -->
+    <appender name="RollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/${FILE_NAME}</file>
+        <encoder>
+            <pattern>%d %-5level %class{2} [%thread] %msg%n</pattern>
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                ${LOGS}/archived/${FILE_NAME}-%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+
+        </rollingPolicy>
+
+    </appender>
+
+    <!-- Error logs -->
+    <appender name="RollingFileError"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOGS}/${FILE_NAME_ERROR}</file>
+
+        <encoder>
+            <pattern>%d %-5level %class{2} [%thread] %msg%n</pattern>
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                ${LOGS}/archived/${FILE_NAME_ERROR}-%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+
+        </rollingPolicy>
+
+    </appender>
+
+    <!-- Root: ERROR and above -->
+    <root level="ERROR">
+        <appender-ref ref="RollingFileError"/>
+        <appender-ref ref="Console"/>
+    </root>
+
+    <!-- Application -->
+    <logger name="com.sarvatra" level="INFO" additivity="false">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <!-- Hibernate SQL -->
+    <logger name="org.hibernate.SQL" level="debug" additivity="false">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+    <!-- Hibernate query parameters -->
+    <!--    <logger name="org.hibernate.type.descriptor.sql" level="trace" additivity="false">-->
+    <!--        <appender-ref ref="RollingFile"/>-->
+    <!--        <appender-ref ref="Console"/>-->
+    <!--    </logger>-->
+
+</configuration>
