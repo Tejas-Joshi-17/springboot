@@ -4,7 +4,7 @@ import com.sarvatra.dto.CreateUserRequestDto;
 import com.sarvatra.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/users")
 public class UserController {
 
-    @Value("${kafka.topic.order-service}")
-    private String serviceTopic;
-
-    private final KafkaTemplate<String, String> kafkaTemplate;
     private final UserService userService;
+    private final Environment environment;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @PostMapping(path = "/order")
     public ResponseEntity<String> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
@@ -30,10 +28,8 @@ public class UserController {
 
     @PostMapping(path = "/{message}")
     public ResponseEntity<String> sendMessage(@PathVariable String message) {
-        for (int i = 0; i < 1000; i++) {
-            kafkaTemplate.send(serviceTopic, String.valueOf(i % 2), message);
-        }
-
+        final String serviceTopic = environment.getProperty("kafka.topic.order-service", "");
+        kafkaTemplate.send(serviceTopic, "10", message);
         return new ResponseEntity<>("Message Queued", HttpStatusCode.valueOf(200));
     }
 
