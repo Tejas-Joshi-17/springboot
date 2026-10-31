@@ -3,9 +3,7 @@ BUILD_FOLDER="build/install/order-service/bin"
 
 if [[ -d $BUILD_FOLDER ]]
 then
-  cd $BUILD_FOLDER || exit
-  bash stop
-  cd ../../../../ || exit
+  bash $BUILD_FOLDER/stop || exit
   gradle clean iA
   # cd $BUILD_FOLDER || exit
   # bash $BUILD_FOLDER/start

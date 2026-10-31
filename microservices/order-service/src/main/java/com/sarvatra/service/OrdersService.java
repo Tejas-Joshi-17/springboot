@@ -1,17 +1,15 @@
 package com.sarvatra.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sarvatra.clients.InventoryOpenFeignClient;
 import com.sarvatra.dto.OrderRequestDto;
-import com.sarvatra.dto.OrderRequestItemDto;
-import com.sarvatra.entity.OrderItem;
-import com.sarvatra.entity.Orders;
-import com.sarvatra.repositories.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
 
 @Slf4j
@@ -19,48 +17,34 @@ import java.util.List;
 @Service
 public class OrdersService {
 
-    private final OrdersRepository ordersRepository;
     private final InventoryOpenFeignClient inventoryOpenFeignClient;
+    private final ObjectMapper objectMapper;
 
-    public List<OrderRequestDto> getAllOrders() {
+    public List<OrderRequestDto> getAllOrders() throws IOException {
         log.info("Fetching all orders");
-        final List<Orders> orders = ordersRepository.findAll();
-        List<OrderRequestDto> requestedOrders = new ArrayList<>();
-        for (Orders orders1 : orders) {
-            OrderRequestDto orderedItem = new OrderRequestDto();
-            List<OrderRequestItemDto> orderRequestItemDto = new ArrayList<>();
 
-            for(OrderItem items : orders1.getItems()) {
-                OrderRequestItemDto orderRequestItemDto1 = new OrderRequestItemDto();
-                orderRequestItemDto1.setId(items.getId());
-                orderRequestItemDto1.setQuantity(items.getQuantity());
-                orderRequestItemDto1.setProductId(items.getProductId());
-                orderRequestItemDto.add(orderRequestItemDto1);
-            }
+        ClassPathResource resource = new ClassPathResource("all-orders-response.json");
 
-            orderedItem.setItems(orderRequestItemDto);
-            orderedItem.setId(orders1.getId());
-            orderedItem.setTotalPrice(BigDecimal.valueOf(orders1.getTotalPrice()));
-            requestedOrders.add(orderedItem);
-        }
+        InputStream inputStream = resource.getInputStream();
 
-        return requestedOrders;
+        return objectMapper.readValue(
+                inputStream,
+                new TypeReference<>() {}
+        );
     }
 
-    public OrderRequestDto getOrderById(Long id) {
+    public OrderRequestDto getOrderById(Long id) throws IOException {
+
         log.info("Fetching order with id :- {}", id);
-        final Orders order = ordersRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
-        List<OrderRequestItemDto> orderRequestItemDto = new ArrayList<>();
-        OrderRequestItemDto orderRequestItemDto1 = new OrderRequestItemDto();
 
-        for(OrderItem items : order.getItems()) {
-            orderRequestItemDto1.setId(items.getId());
-            orderRequestItemDto1.setQuantity(items.getQuantity());
-            orderRequestItemDto1.setProductId(items.getProductId());
-            orderRequestItemDto.add(orderRequestItemDto1);
-        }
+        ClassPathResource resource = new ClassPathResource("order-by-id-response.json");
 
-        return new OrderRequestDto(order.getId(), orderRequestItemDto, BigDecimal.valueOf(order.getTotalPrice()));
+        InputStream inputStream = resource.getInputStream();
+
+        OrderRequestDto orderRequestDto =  objectMapper.readValue(inputStream, new TypeReference<>() {} );
+        orderRequestDto.setId(id);
+
+        return orderRequestDto;
     }
 
 }

@@ -1,11 +1,9 @@
 
-BUILD_FOLDER="build/install/inventory-service/bin"
+BUILD_FOLDER="build/install/discovery-service/bin"
 
 if [[ -d $BUILD_FOLDER ]]
 then
-  cd $BUILD_FOLDER || exit
-  bash stop
-  cd ../../../../ || exit
+  bash $BUILD_FOLDER/stop || exit
   gradle clean iA
   # cd $BUILD_FOLDER || exit
   # bash $BUILD_FOLDER/start

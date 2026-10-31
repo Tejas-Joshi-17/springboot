@@ -1,0 +1,16 @@
+
+1. API Gateway              13011
+2. Config Server            13012
+3. Discovery Service        13013
+4. Order Service            13014
+5. Inventory Service        13015
+
+
+Inventory Service :-
+    1. inventories
+    2. order
+
+Order Service :-
+    1. inventory
+    2. orders
+

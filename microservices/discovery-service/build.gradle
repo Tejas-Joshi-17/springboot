@@ -98,8 +98,6 @@ class BuildTimestampTask extends DefaultTask {
     }
 }
 
-apply from: 'app.gradle'
-
 //tasks.named('test') {
 //    useJUnitPlatform()
 //}

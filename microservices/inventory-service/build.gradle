@@ -41,6 +41,10 @@ dependencies {
 
     // Source: https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.3")
+
+    // Source: https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-config-client
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-client', version: '4.2.2'
+
 }
 
 tasks.register('createBuildTimestampPropertyFile', BuildTimestampTask) {
@@ -106,8 +110,6 @@ class BuildTimestampTask extends DefaultTask {
         props.store(new FileOutputStream(outputFile), "Build Properties")
     }
 }
-
-apply from: 'app.gradle'
 
 //tasks.named('test') {
 //    useJUnitPlatform()

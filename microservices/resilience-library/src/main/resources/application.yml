@@ -1,0 +1,33 @@
+
+resilience4j:
+
+  retry:
+    configs:
+      default:
+        maxRetryAttempts: 3         # Maximum number of attempts including the initial call
+        waitDuration: 100ms         # Time to wait before making the next retry attempt
+    instances:
+      paymentService:
+        maxRetryAttempts: 3         # Maximum number of attempts including the initial call
+        waitDuration: 10s           # Wait 10 seconds before each retry attempt
+        retryExceptions:
+          - java.lang.Exception     # Retry the operation when an Exception occurs
+
+  ratelimiter:
+    instances:
+      fundTransferLimit:
+        limitRefreshPeriod: 30s         # Refresh the limit after every 30 seconds
+        limitForPeriod: 3               # Max 3 calls in a refresh period
+        timeoutDuration: 5s             # Time to wait for permission before a request fails
+
+  circuitbreaker:
+    instances:
+      inventoryCircuitBreaker:
+        registerHealthIndicator: true     # Expose circuit breaker health via the actuator
+        slidingWindowSize: 10             # Size of the sliding window for call recording
+        slidingWindowType: COUNT_BASED    # Use count-based sliding window
+        minimumNumberOfCalls: 10          # Minimum number of calls before calculating failure rate
+        failureRateThreshold: 50          # If 50% (5 out of 10) calls fail, the circuit goes to OPEN state
+        waitDurationInOpenState: 1s       # Time the circuit stays OPEN before moving to HALF_OPEN
+        permittedNumberOfCallsInHalfOpenState: 3  # Number of test calls in HALF_OPEN state
+        eventConsumerBufferSize: 10       # Buffer size for event logs

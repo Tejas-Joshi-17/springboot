@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: config-service
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Tejas-Joshi-17/ecommerce-config-server
+          username: Tejas-Joshi-17
+          password: ${CONFIG_SERVER_GITHUB_PASSWORD}
+          default-label: master
+
+# To Check Config of service :-
+
+# 1) for default profile
+# - http://localhost:13012/order-service/default
+# - http://localhost:13012/inventory-service/default
+# - http://localhost:13012/api-gateway/default
+
+# 2) for 'dev' profile
+# - http://localhost:13012/order-service/dev
+# - http://localhost:13012/inventory-service/dev
+# - http://localhost:13012/api-gateway/dev

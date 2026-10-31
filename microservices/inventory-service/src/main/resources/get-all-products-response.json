@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Smartphone",
+    "price": 699.99,
+    "stock": 50
+  },
+  {
+    "id": 2,
+    "name": "Laptop",
+    "price": 1299.99,
+    "stock": 30
+  },
+  {
+    "id": 3,
+    "name": "Tablet",
+    "price": 499.99,
+    "stock": 40
+  },
+  {
+    "id": 4,
+    "name": "Smartwatch",
+    "price": 199.99,
+    "stock": 70
+  },
+  {
+    "id": 5,
+    "name": "Wireless Headphones",
+    "price": 149.99,
+    "stock": 100
+  },
+  {
+    "id": 6,
+    "name": "Bluetooth Speaker",
+    "price": 89.99,
+    "stock": 80
+  },
+  {
+    "id": 7,
+    "name": "Smart TV",
+    "price": 799.99,
+    "stock": 25
+  },
+  {
+    "id": 8,
+    "name": "Gaming Console",
+    "price": 399.99,
+    "stock": 45
+  },
+  {
+    "id": 9,
+    "name": "External Hard Drive",
+    "price": 129.99,
+    "stock": 60
+  },
+  {
+    "id": 10,
+    "name": "Digital Camera",
+    "price": 599.99,
+    "stock": 35
+  },
+  {
+    "id": 11,
+    "name": "Wireless Mouse",
+    "price": 29.99,
+    "stock": 90
+  },
+  {
+    "id": 12,
+    "name": "Keyboard",
+    "price": 49.99,
+    "stock": 85
+  },
+  {
+    "id": 13,
+    "name": "Monitor",
+    "price": 299.99,
+    "stock": 50
+  },
+  {
+    "id": 14,
+    "name": "Printer",
+    "price": 199.99,
+    "stock": 40
+  },
+  {
+    "id": 15,
+    "name": "Router",
+    "price": 89.99,
+    "stock": 70
+  },
+  {
+    "id": 16,
+    "name": "Smart Home Hub",
+    "price": 149.99,
+    "stock": 65
+  },
+  {
+    "id": 17,
+    "name": "VR Headset",
+    "price": 399.99,
+    "stock": 20
+  },
+  {
+    "id": 18,
+    "name": "Fitness Tracker",
+    "price": 99.99,
+    "stock": 75
+  },
+  {
+    "id": 19,
+    "name": "Drone",
+    "price": 999.99,
+    "stock": 30
+  },
+  {
+    "id": 20,
+    "name": "Portable Charger",
+    "price": 39.99,
+    "stock": 100
+  }
+]
